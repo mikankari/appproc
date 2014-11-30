@@ -1,0 +1,117 @@
+
+body{
+	background-color: #fcfcfc;
+	font-family: メイリオ, sans-serif;
+	font-size: 16px;
+	margin: 0px;
+	padding: 0px;
+}
+
+button, input{
+	background-color: #ffffff;
+	font-family: メイリオ, sans-serif;
+	font-size: 14px;
+}
+
+button{
+	border: 5px solid #d3f9bc;
+}
+
+input{
+	background-color: #f0f0f0;
+	border: 0px solid #333333;
+	width: 37px;
+}
+
+input[disabled]{
+	background-color: #ffffff;
+}
+
+span.output{
+	width: 50px;
+	display: inline-block;
+}
+
+div.result{
+	font-size: 45px;
+}
+
+.clearfix:after{
+	content: '';
+	display: block;
+	clear: both;
+}
+
+#container{
+}
+
+#room{
+	background-color: #ffffff;
+	margin: 30px auto 25px;
+	border: solid 10px #f0f0f0;
+	width: 800px;
+}
+
+#character{
+	padding: 20px;
+	float: left;
+}
+
+#character>div{
+	width: 320px;
+}
+
+#character_text{
+	margin: 0px auto;
+	background-color: transparent;
+	background-image: url(../images/baloon.png);
+	padding: 5px;
+	width: 240px;
+	height: 90px;
+}
+
+#character_image{
+	display: block;
+	margin: 30px auto 0px;
+}
+
+#console{
+	padding: 20px 20px 20px 0px;
+	float: left;
+}
+
+#console>div{
+	width: auto;
+}
+
+#console_text{
+	text-align: center;
+	vertical-align: middle;
+	border: 2px solid #f0f0f0;
+	width: 394px;
+	height: 440px;
+	overflow-y: scroll;
+	display: table-cell;
+}
+
+#console_text table{
+	margin: 0px auto;
+	text-align: left;
+}
+
+#console_text span.output{
+	text-align: right;
+}
+
+#console_text input{
+	margin-left: 20px;
+	text-align: right;
+}
+
+#console_text button{
+	margin-top: 10px;
+}
+
+#console_buttons{
+	text-align: right;
+}

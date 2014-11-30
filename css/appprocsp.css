@@ -1,0 +1,28 @@
+
+#room{
+	margin: 0px auto 0px;
+	width: 300px;
+}
+
+#character{
+	float: none;
+}
+
+#character>div{
+	width: 260px;
+}
+
+#console{
+	padding: 0px 20px 20px 20px;
+	float: none;
+}
+
+#console_text{
+	margin: 0px auto;
+	width: 260px;
+	height: 250px;
+}
+
+#console_buttons{
+	text-align: center;
+}
