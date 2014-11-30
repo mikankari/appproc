@@ -12,7 +12,7 @@ function CharacterStatus(){
 CharacterStatus.prototype = {
 	init: function (){
 		this.client = "";
-		this.default_client = "192.168.1.42";
+		this.default_client = "127.0.0.1";
 		this.ene = "";
 		this.clients = [];
 		this.socket = null;
@@ -21,7 +21,7 @@ CharacterStatus.prototype = {
 		return window.WebSocket ? true : false;
 	}
 	, receive: function (callback){
-		this.socket = new WebSocket("ws://" + location.hostname + ":3939/appproc/server/server.php");
+		this.socket = new WebSocket("ws://" + location.hostname + ":9000/appproc/server/server.php");
 		this.socket.addEventListener("message", function (event){
 			if(event.data.match(/^(login|logout|message) client\:([\d\.]*) ene\:([\d\.]*) clients\:([\d\.\;]*)$/)){
 				var command = RegExp.$1;

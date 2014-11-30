@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost'; //host
-$port = '3939'; //port
+$port = '9000'; //port
 error_reporting(E_ERROR | E_PARSE);
 
 $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
