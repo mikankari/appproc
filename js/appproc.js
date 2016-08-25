@@ -7,7 +7,7 @@ var initalized;
 function init(){
 	var finish_button = document.getElementById("finish_button");
 	finish_button.addEventListener("click", function(){
-		if(character_status.client == character_status.default_client){
+		if(character_status.here == character_status.desktop){
 			if(window.confirm("戦闘を終了しますか？")){
 				fase = -2;
 				next();
@@ -22,7 +22,7 @@ function init(){
 		message += "KMB Ver.1.0 produce by 遠藤\n";
 		message += "\n";
 		message += "イラストを提供して下さった吉野さん\n";
-		message += "キャラクター転送PHPプログラムを参考にさせていただいたsaaraan.com様\n";
+//		message += "キャラクター転送PHPプログラムを参考にさせていただいたsaaraan.com様\n";
 		message += "に多大なる感謝を。\n";
 		message += "And Thank you your playing.";
 		window.alert(message);
@@ -30,49 +30,48 @@ function init(){
 
 	character_data = new Character();
 	character_status = new CharacterStatus();
-	if(character_status.isSupported()){
-		character_status.receive(function (){
-			var character_text;
-			var character_image;
-			if(character_status.ene == character_status.client){
-				if(character_status.client == character_status.default_client){
-					character_text = "攻撃体制に戻ってみたよ！";
-					character_image = "images/yandereko_defort.png";
-				}else{
-					character_text = "ここにいれば安全かも";
-					character_image = "images/yandereko_defort.png";
-				}
+	character_status.receive(function (){
+		console.log(fase);
+		console.log(character_status);
+		var character_text;
+		var character_image;
+		if(character_status.ene == character_status.here){
+			if(character_status.here == character_status.desktop){
+				character_text = "攻撃体制に戻ってみたよ！";
+				character_image = "images/yandereko_defort.png";
 			}else{
-				if(character_status.client == character_status.default_client){
-					character_text = "逃げてやるんだからー";
-					character_image = "images/outing.png";
-				}else{
-					character_text = "攻撃に出かけています";
-					character_image = "images/outing.png";
-				}
+				character_text = "ここにいれば安全かも";
+				character_image = "images/yandereko_defort.png";
 			}
-			if(fase != 1 || (character_status.clients.length > 0 && character_status.client != character_status.default_client)){
-				window.setTimeout('setCharacterText("ケーブル内を移動中..."); setCharacterImage("images/outing.png");', 0);
-				window.setTimeout('setCharacterText("' + character_text + '"); setCharacterImage("' + character_image + '");', 1500);
+		}else{
+			if(character_status.here == character_status.desktop){
+				character_text = "逃げてやるんだからー";
+				character_image = "images/outing.png";
 			}else{
-				setCharacterImage(character_image);
+				character_text = "攻撃に出かけています";
+				character_image = "images/outing.png";
 			}
-			if(!initalized && character_status.client != ""){
-				initalized = true;
-				next();
-			}
-		});
-		fase = 0;
-		initalized = false;
-		next();
-	}else{
-character_status.setLocal();
-fase = 1;
-next();
+		}
+		if(fase != 1 || (character_status.here != character_status.desktop)){
+			window.setTimeout('setCharacterText("ケーブル内を移動中..."); setCharacterImage("images/outing.png");', 0);
+			window.setTimeout('setCharacterText("' + character_text + '"); setCharacterImage("' + character_image + '");', 1500);
+		}else{
+			setCharacterImage(character_image);
+		}
+		if(!initalized){
+			initalized = true;
+			next();
+		}
+	});
+	fase = 0;
+	initalized = false;
+	next();
+		//character_status.localmode();
+		//fase = 1;
+		//next();
 		// setCharacterText("もっと新しいブラウザがいいな");
 		// setCharacterImage("images/yandereko_defort.png");
 
-	}
 }
 
 function next(option){
@@ -85,8 +84,8 @@ function next(option){
 				console_html += '<button onclick="next(\'left\')">左プレイヤーの勝利</button>　<button onclick="next(\'right\')">右プレイヤーの勝利</button>';
 				character_text = "どっちが勝ちましたか？";
 				character_image = "images/yandereko_defort.png";
-				if(character_status.ene != character_status.client){
-					character_status.sendClient();
+				if(character_status.ene != character_status.here){
+					character_status.sendDesktop();
 				}
 				break;
 			case -1:
@@ -109,7 +108,7 @@ function next(option){
 				initalized = false;
 				break;
 			case 1:
-				if(character_status.client == character_status.default_client){
+				if(character_status.here == character_status.desktop){
 					console_html += '<button onclick="next(\'left\')">左プレイヤー</button>　<button onclick="next(\'right\')">右プレイヤー</button>';
 					character_text = "プレイヤーモードを選択してください！";
 					character_image = "images/yandereko_defort.png";
@@ -175,8 +174,8 @@ function next(option){
 							character_text = "いっくよー";
 							character_image = "images/yandereko_defort2.png";
 						}
-						if(character_status.ene != character_status.client){
-							character_status.sendClient();
+						if(character_status.ene != character_status.here){
+							character_status.sendDesktop();
 						}
 					}else{
 						if(character_data.defense == 7){
@@ -186,7 +185,7 @@ function next(option){
 							character_text = "いまは手加減してやるんだから！";
 							character_image = "images/yandereko_defort2.png";
 						}
-						if(character_status.ene == character_status.client){
+						if(character_status.ene == character_status.here){
 							character_status.sendOther();
 						}
 					}
@@ -221,7 +220,7 @@ function setConsoleText(html){
 }
 
 function setCharacterImage(file){
-	if(character_status.ene != character_status.client){
+	if(character_status.ene != character_status.here){
 		file = "images/outing.png";
 	}
 	var character_image = document.getElementById("character_image");

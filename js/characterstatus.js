@@ -1,90 +1,63 @@
 
 function CharacterStatus(){
-	this.client;
+	this.here;
+	this.desktop;
 	this.ene;
-	this.clients;
 	this.socket;
-	this.timerout_timer;
+	this.timeout_timer;
 
 	this.init();
 }
 
 CharacterStatus.prototype = {
 	init: function (){
-		this.client = "";
-		this.default_client = "127.0.0.1";
+		this.here = "";
+		this.desktop = "";
 		this.ene = "";
-		this.clients = [];
 		this.socket = null;
-	}
-	, isSupported: function (){
-		return window.WebSocket ? true : false;
+		this.timeout_timer = null;
 	}
 	, receive: function (callback){
-		this.socket = new WebSocket("ws://" + location.hostname + ":9000/appproc/server/server.php");
-		this.socket.addEventListener("message", function (event){
-			if(event.data.match(/^(login|logout|message) client\:([\d\.]*) ene\:([\d\.]*) clients\:([\d\.\;]*)$/)){
-				var command = RegExp.$1;
-				var client = RegExp.$2;
-				var ene = RegExp.$3;
-				var clients = RegExp.$4;
-				if(client != "" && character_status.client == ""){
-					character_status.client = client;
-				}
-				if(ene != "" && ene != character_status.ene){
-					character_status.ene = ene;
-					callback();
-				}
-				if(clients != ""){
-					character_status.clients = clients.split(";");
-				}
+		this.socket = io("ws://" + location.hostname + ":3000/");
+		this.socket.on("connect2", function (data){
+			if(data.here != "" && data.here.indexOf(character_status.socket.id) == -1){
+				return;
 			}
-			window.clearTimeout(character_status.timerout_timer);
-		}, false);
-		this.socket.addEventListener("error", function (event){
-			if(character_status.client == ""){
-				character_status.setLocal();
-				callback();
-			}
-			window.clearTimeout(character_status.timerout_timer);
-		}, false);
-		window.addEventListener("unload", function (event){
-			if(character_status.client == character_status.ene){
-				character_status.send();
+			window.clearTimeout(character_status.timeout_timer);
+			character_status.here = data.here;
+			character_status.desktop = data.desktop;
+			character_status.ene = data.ene;
+			callback();
+		});
+		this.socket.on("go", function (data){
+			character_status.desktop = data.desktop;
+			character_status.ene = data.ene;
+			callback();
+		});
+		window.addEventListener("beforeunload", function (){
+			if(character_status.here == character_status.ene){
+				character_status.sendOther();
 			}
 		}, false);
-		this.timerout_timer = window.setTimeout(function () {	character_status.setLocal();	callback();	}, 5000);
+		this.timeout_timer = window.setTimeout(function () {
+			character_status.localmode();
+			callback();
+		}, 5000);
 	}
-	, setLocal: function (){
-		this.client = this.default_client;
-		this.ene = this.default_client;
-		this.clients = this.default_client;
+	, localmode: function (){
+		this.here = "";
+		this.desktop = "";
+		this.ene = "";
+	}
+	, isDesktop: function (){
+		location.hostname != "127.0.0.1"
 	}
 
-	, sendClient: function (){
-		var to = this.client;
-		return this.send(to);
+	, sendDesktop: function (){
+		this.socket.emit("goback", {});
 	}
 
 	, sendOther: function (){
-		if(this.clients.length < 2){
-			return false;
-		}
-		var to;
-		do{
-			to = this.clients[Math.floor(Math.random() * this.clients.length)];
-		}while(to == this.ene);
-		return this.send(to);
-	}
-
-	, send: function (to){
-		var result;
-		try{
-			this.socket.send("message client:" + this.client + " ene:" + to + " clients:");
-			result = true;
-		}catch(error){
-			result = false;
-		}
-		return result;
+		this.socket.emit("go", {});
 	}
 }

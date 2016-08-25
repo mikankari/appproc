@@ -1,22 +1,22 @@
 KMB Ver.1.0 produce by Endo
 
-���T�v
-���ł�񂱂��o�g�������܂��B
-�o�g���ɂ͕ʓr�A���̃L�����N�^�[�ƃW���b�W�����g�̂Q�̃V�X�e�����K�v�ł��B
-���̎q�͍U���ꏊ�Ɩh��ꏊ���P�[�u���ňړ����Ȃ���킢�܂��B
+▼概要
+やんでれんこがバトルをします。
+バトルには別途、他のキャラクターとジャッジメントの２つのシステムが必要です。
+この子は攻撃場所と防御場所をケーブルで移動しながら戦います。
 
-���U���ꏊ�̊J����
-�E04WebServer 1.92
-�EWindows 7 Professional + Internet Explorer 10
-�EPHP 5.3.28
-�E802.11a
-�E����Lightning�P�[�u��
+▼攻撃場所の開発環境
+・04WebServer 1.92
+・Windows 7 Professional + Internet Explorer 10
+・PHP 5.3.28
+・802.11a
+・純正Lightningケーブル
 
-���h��ꏊ�̊J����
-�EiOS 7.1.2 + Safari
-�E802.11a
+▼防御場所の開発環境
+・iOS 7.1.2 + Safari
+・802.11a
 
-���ӎ�
-�C���X�g��񋟂��ĉ��������g�삳��
-PHP�X�N���v�g���Q�l�ɂ����Ă���������saaraan.com�l
-����ɑ���Ȃ銴�ӂ��B
+▼謝辞
+イラストを提供して下さった吉野さん
+PHPスクリプトを参考にさせていただいたsaaraan.com様
+二方に多大なる感謝を。
